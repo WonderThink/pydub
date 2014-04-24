@@ -6,6 +6,10 @@ import re
 from subprocess import Popen, PIPE
 import sys
 from tempfile import TemporaryFile
+try:
+    from django.conf import settings
+except ImportError:
+    pass
 
 try:
     import audioop
@@ -108,6 +112,10 @@ def get_encoder_name():
     """
     Return enconder default application for system, either avconv or ffmpeg
     """
+    try:
+        return settings.FFMPEG_PATH
+    except:
+        pass
     if which("avconv"):
         return "avconv"
     elif which("ffmpeg"):
